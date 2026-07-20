@@ -6,6 +6,7 @@ import java.util.Currency;
 import java.util.Objects;
 
 public class Expense {
+	private long id;
 	private BigDecimal amount;
 	private Category   category;
 	private LocalDate  date;
@@ -20,6 +21,10 @@ public class Expense {
 		this.description = "";
 		this.merchant    = "";
 		this.currency    = Currency.getInstance("EUR");
+	}
+	
+	public long getId() {
+		return id;
 	}
 	
 	public BigDecimal getAmount() {

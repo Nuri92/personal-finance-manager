@@ -6,7 +6,7 @@ import java.util.Currency;
 import java.util.Objects;
 
 public class Expense {
-	private long id;
+	private long       id;
 	private BigDecimal amount;
 	private Category   category;
 	private LocalDate  date;
@@ -49,6 +49,18 @@ public class Expense {
 	
 	public Currency getCurrency() {
 		return currency;
+	}
+	
+	public void assignId(long id) {
+		if (id <= 0) {
+			throw new IllegalArgumentException("Expense ID must be greater than zero");
+		}
+		
+		if (this.id != 0) {
+			throw new IllegalStateException("Expense already has an ID");
+		}
+		
+		this.id = id;
 	}
 	
 	public void changeAmount(BigDecimal amount) {

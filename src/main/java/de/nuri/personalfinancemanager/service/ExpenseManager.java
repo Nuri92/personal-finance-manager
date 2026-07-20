@@ -5,18 +5,24 @@ import de.nuri.personalfinancemanager.model.Expense;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ExpenseManager {
 	
 	private       long          newExpenseId = 1;
 	private final List<Expense> expenses     = new ArrayList<>();
 	
-	public void addExpense(Expense expense) {
-	
+	public Expense addExpense(Expense expense) {
+		Objects.requireNonNull(expense, "Expense must not be null");
+		expense.assignId(newExpenseId);
+		newExpenseId++;
+		expenses.add(expense);
+		
+		return expense;
 	}
 	
 	public List<Expense> getAllExpenses() {
-		return null;
+		return expenses;
 	}
 	
 	public Expense getExpenseById(long expenseId) {

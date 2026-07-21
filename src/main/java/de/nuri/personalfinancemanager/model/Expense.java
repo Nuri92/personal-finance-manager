@@ -63,6 +63,16 @@ public class Expense {
 		this.id = id;
 	}
 	
+	public void updateForm(Expense updatedExpense) {
+		Objects.requireNonNull(updatedExpense, "Updated expense must not be null");
+		changeAmount(updatedExpense.getAmount());
+		changeCategory(updatedExpense.getCategory());
+		changeDate(updatedExpense.getDate());
+		changeCurrency(updatedExpense.getCurrency());
+		changeDescription(updatedExpense.getDescription());
+		changeMerchant(updatedExpense.getMerchant());
+	}
+	
 	public void changeAmount(BigDecimal amount) {
 		this.amount = validateAmount(amount);
 	}

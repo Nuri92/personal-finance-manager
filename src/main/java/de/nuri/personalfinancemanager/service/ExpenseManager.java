@@ -47,8 +47,9 @@ public class ExpenseManager {
 		expense.updateForm(updatedExpense);
 	}
 	
-	public void deleteExpense(long expenseId) {
-	
+	public void deleteExpense(long id) {
+		Expense expense = getExpenseById(id);
+		expenses.remove(expense);
 	}
 	
 	public List<Expense> getExpensesSortedByDate() {

@@ -55,7 +55,15 @@ public class ExpenseManager {
 	}
 	
 	public List<Expense> getExpensesByDate(LocalDate date) {
-		return null;
+		Objects.requireNonNull(date, "Date must not be null");
+		List<Expense> matchingExpenses = new ArrayList<>();
+		for (Expense expense : expenses
+		) {
+			if (expense.getDate().equals(date)) {
+				matchingExpenses.add(expense);
+			}
+		}
+		return matchingExpenses;
 	}
 	
 	public List<Expense> getExpensesByCategory(Category category) {

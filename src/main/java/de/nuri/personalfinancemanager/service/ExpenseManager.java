@@ -3,6 +3,8 @@ package de.nuri.personalfinancemanager.service;
 import de.nuri.personalfinancemanager.model.Category;
 import de.nuri.personalfinancemanager.model.Expense;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -52,11 +54,28 @@ public class ExpenseManager {
 		expenses.remove(expense);
 	}
 	
-	public List<Expense> getExpensesSortedByDate() {
+	public List<Expense> getExpensesByDate(LocalDate date) {
 		return null;
 	}
 	
 	public List<Expense> getExpensesByCategory(Category category) {
-		return null;
+		Objects.requireNonNull(category, "Category must not be null");
+		List<Expense> matchingExpenses = new ArrayList<>();
+		for (Expense expense : expenses) {
+			if (expense.getCategory() == category) {
+				matchingExpenses.add(expense);
+			}
+		}
+		return matchingExpenses;
+	}
+	
+	public BigDecimal getTotalAmount() {
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		
+		for (Expense expense : expenses) {
+			totalAmount = totalAmount.add(expense.getAmount());
+		}
+		
+		return totalAmount;
 	}
 }

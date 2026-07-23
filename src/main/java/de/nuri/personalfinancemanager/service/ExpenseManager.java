@@ -5,10 +5,8 @@ import de.nuri.personalfinancemanager.model.Expense;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Predicate;
 
 public class ExpenseManager {
 	
@@ -56,25 +54,49 @@ public class ExpenseManager {
 	
 	public List<Expense> getExpensesByDate(LocalDate date) {
 		Objects.requireNonNull(date, "Date must not be null");
+		return filterExpense(expense -> expense.getDate().equals(date));
+	}
+	
+	public List<Expense> getExpensesByCategory(Category category) {
+		Objects.requireNonNull(category, "Category must not be null");
+		return filterExpense(expense -> expense.getCategory() == category);
+	}
+	
+	public List<Expense> getExpensesByMerchant(Category category) {
+		Objects.requireNonNull(category, "Category must not be null");
+		return filterExpense(expense -> expense.getMerchant().equals(category));
+	}
+	
+	private List<Expense> filterExpense(Predicate<Expense> predicate) {
 		List<Expense> matchingExpenses = new ArrayList<>();
-		for (Expense expense : expenses
-		) {
-			if (expense.getDate().equals(date)) {
+		for (Expense expense : expenses) {
+			if (predicate.test(expense)) {
 				matchingExpenses.add(expense);
 			}
 		}
 		return matchingExpenses;
 	}
 	
-	public List<Expense> getExpensesByCategory(Category category) {
-		Objects.requireNonNull(category, "Category must not be null");
-		List<Expense> matchingExpenses = new ArrayList<>();
-		for (Expense expense : expenses) {
-			if (expense.getCategory() == category) {
-				matchingExpenses.add(expense);
-			}
-		}
-		return matchingExpenses;
+	public List<Expense> sortByAmountAscending() {
+		return sortExpenses((expense1, expense2) -> expense1.getAmount().compareTo(expense2.getAmount()));
+	}
+	
+	public List<Expense> sortByAmountDescending() {
+		return sortExpenses((expense1, expense2) -> expense2.getAmount().compareTo(expense1.getAmount()));
+	}
+	
+	public List<Expense> sortedByDateAscending() {
+		return sortExpenses((expense1, expense2) -> expense1.getDate().compareTo(expense2.getDate()));
+	}
+	
+	public List<Expense> sortedByDateDescending() {
+		return sortExpenses((expense1, expense2) -> expense2.getDate().compareTo(expense1.getDate()));
+	}
+	
+	private List<Expense> sortExpenses(Comparator<Expense> comparator) {
+		List<Expense> copy = new ArrayList<>(expenses);
+		copy.sort(comparator);
+		return copy;
 	}
 	
 	public BigDecimal getTotalAmount() {
@@ -82,6 +104,19 @@ public class ExpenseManager {
 		
 		for (Expense expense : expenses) {
 			totalAmount = totalAmount.add(expense.getAmount());
+		}
+		
+		return totalAmount;
+	}
+	
+	public BigDecimal getTotalAmountByCategory(Category category) {
+		Objects.requireNonNull(category, "Category must not be null");
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		
+		for (Expense expense : expenses) {
+			if (expense.getCategory() == category) {
+				totalAmount = totalAmount.add(expense.getAmount());
+			}
 		}
 		
 		return totalAmount;

@@ -121,4 +121,38 @@ public class ExpenseManager {
 		
 		return totalAmount;
 	}
+	
+	public Map<Category, BigDecimal> getTotalAmountForEachCategory() {
+		Map<Category, BigDecimal> totalAmounts = new HashMap<>();
+		
+		for (Expense expense : expenses) {
+			Category   category     = expense.getCategory();
+			BigDecimal currentTotal = totalAmounts.get(category);
+			
+			if (currentTotal != null) {
+				totalAmounts.put(
+						category,
+						currentTotal.add(expense.getAmount())
+				);
+			} else {
+				totalAmounts.put(category, expense.getAmount());
+			}
+		}
+		
+		return totalAmounts;
+	}
+	
+	public BigDecimal getTotalAmountForSingleCategory(Category category) {
+		Objects.requireNonNull(category, "Category must not be null");
+		
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		
+		for (Expense expense : expenses) {
+			if (expense.getCategory() == category) {
+				totalAmount = totalAmount.add(expense.getAmount());
+			}
+		}
+		
+		return totalAmount;
+	}
 }

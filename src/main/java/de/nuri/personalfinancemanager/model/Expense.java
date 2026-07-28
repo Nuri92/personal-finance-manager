@@ -14,14 +14,21 @@ public class Expense {
 	private String     merchant;
 	private Currency   currency;
 	
-	public Expense(BigDecimal amount, Category category, LocalDate date) {
+	public Expense(BigDecimal amount,
+	               Category category,
+	               LocalDate date,
+	               String description,
+	               String merchant,
+	               Currency currency) {
+		
 		this.amount      = validateAmount(amount);
 		this.category    = Objects.requireNonNull(category, "Category must not be null");
 		this.date        = Objects.requireNonNull(date, "Date must not be null");
-		this.description = "";
-		this.merchant    = "";
-		this.currency    = Currency.getInstance("EUR");
+		this.description = Objects.requireNonNull(description, "Description must not be null");
+		this.merchant    = Objects.requireNonNull(merchant, "Merchant must not be null");
+		this.currency    = Objects.requireNonNull(currency, "Currency must not be null");
 	}
+	
 	
 	public long getId() {
 		return id;
@@ -111,4 +118,16 @@ public class Expense {
 		return value == null ? "" : value.trim();
 	}
 	
+	@Override
+	public String toString() {
+		return "Expense{" +
+				"id=" + id +
+				", amount=" + amount +
+				", category=" + category +
+				", date=" + date +
+				", description='" + description + '\'' +
+				", merchant='" + merchant + '\'' +
+				", currency='" + currency + '\'' +
+				'}';
+	}
 }

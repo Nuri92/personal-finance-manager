@@ -24,8 +24,8 @@ public class Expense {
 		this.amount      = validateAmount(amount);
 		this.category    = Objects.requireNonNull(category, "Category must not be null");
 		this.date        = Objects.requireNonNull(date, "Date must not be null");
-		this.description = Objects.requireNonNull(description, "Description must not be null");
-		this.merchant    = Objects.requireNonNull(merchant, "Merchant must not be null");
+		this.description = normalizeOptionalText(description);
+		this.merchant    = normalizeOptionalText(merchant);
 		this.currency    = Objects.requireNonNull(currency, "Currency must not be null");
 	}
 	

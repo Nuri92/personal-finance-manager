@@ -62,9 +62,11 @@ public class ExpenseManager {
 		return filterExpense(expense -> expense.getCategory() == category);
 	}
 	
-	public List<Expense> getExpensesByMerchant(Category category) {
-		Objects.requireNonNull(category, "Category must not be null");
-		return filterExpense(expense -> expense.getMerchant().equals(category));
+	public List<Expense> getExpensesByMerchant(String merchant) {
+		Objects.requireNonNull(merchant, "Merchant must not be null");
+		return filterExpense(
+				expense -> expense.getMerchant().equalsIgnoreCase(merchant)
+		);
 	}
 	
 	private List<Expense> filterExpense(Predicate<Expense> predicate) {
@@ -142,18 +144,9 @@ public class ExpenseManager {
 		return totalAmounts;
 	}
 	
-	public BigDecimal getTotalAmountForSingleCategory(Category category) {
-		Objects.requireNonNull(category, "Category must not be null");
-		
-		BigDecimal totalAmount = BigDecimal.ZERO;
-		
-		for (Expense expense : expenses) {
-			if (expense.getCategory() == category) {
-				totalAmount = totalAmount.add(expense.getAmount());
-			}
-		}
-		
-		return totalAmount;
-	}
 	
+	@Override
+	public String toString() {
+		return expenses.toString();
+	}
 }

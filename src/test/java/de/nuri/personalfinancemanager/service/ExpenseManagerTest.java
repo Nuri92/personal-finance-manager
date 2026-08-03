@@ -99,11 +99,23 @@ class ExpenseManagerTest {
 	void getExpenseById_throwsWhenIdDoesNotExist() {
 		// Arrange
 		ExpenseManager expenseManager = new ExpenseManager();
-
+		
 		// Act & Assert
 		assertThrows(
 				NoSuchElementException.class,
 				() -> expenseManager.getExpenseById(1L)
+		);
+	}
+	
+	@Test
+	void getExpenseById_throwsWhenIdIsZero() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		
+		// Act & Assert
+		assertThrows(
+				IllegalArgumentException.class,
+				() -> expenseManager.getExpenseById(0L)
 		);
 	}
 }

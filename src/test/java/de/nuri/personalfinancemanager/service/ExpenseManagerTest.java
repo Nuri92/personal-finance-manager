@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
+import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ExpenseManagerTest {
 	
@@ -72,5 +72,38 @@ class ExpenseManagerTest {
 		
 		assertSame(firstAddedExpense, expenseManager.getAllExpenses().get(0));
 		assertSame(secondAddedExpense, expenseManager.getAllExpenses().get(1));
+	}
+	
+	@Test
+	void getExpenseById_returnsStoredExpense() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		Expense expense = new Expense(
+				new BigDecimal("12.25"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 4),
+				"Snack",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		expenseManager.addExpense(expense);
+		
+		// Act
+		Expense storedExpense = expenseManager.getExpenseById(expense.getId());
+		
+		// Assert
+		assertSame(expense, storedExpense);
+	}
+	
+	@Test
+	void getExpenseById_throwsWhenIdDoesNotExist() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+
+		// Act & Assert
+		assertThrows(
+				NoSuchElementException.class,
+				() -> expenseManager.getExpenseById(1L)
+		);
 	}
 }

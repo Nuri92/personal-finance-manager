@@ -2,6 +2,8 @@ package de.nuri.personalfinancemanager.service;
 
 import de.nuri.personalfinancemanager.model.Category;
 import de.nuri.personalfinancemanager.model.Expense;
+import de.nuri.personalfinancemanager.repository.ExpenseRepository;
+import de.nuri.personalfinancemanager.repository.InMemoryExpenseRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,14 +12,39 @@ import java.util.function.Predicate;
 
 public class ExpenseManager {
 	
-	private       long          newExpenseId = 1;
-	private final List<Expense> expenses     = new ArrayList<>();
+	private       long              newExpenseId = 1;
+	private final List<Expense>     expenses;
+	private final ExpenseRepository repository;
+	
+	public ExpenseManager() {
+		this(new InMemoryExpenseRepository());
+	}
+	
+	public ExpenseManager(ExpenseRepository repository) {
+		this.repository   = Objects.requireNonNull(repository, "Repository must not be null");
+		this.expenses     = new ArrayList<>(repository.load());
+		this.newExpenseId = determineNextExpenseId();
+		
+	}
+	
+	private long determineNextExpenseId() {
+		long highestId = 0;
+		for (Expense expense : expenses
+		) {
+			if (expense.getId() > newExpenseId) {
+				highestId = expense.getId();
+			}
+		}
+		
+		return highestId + 1;
+	}
 	
 	public Expense addExpense(Expense expense) {
 		Objects.requireNonNull(expense, "Expense must not be null");
 		expense.assignId(newExpenseId);
 		newExpenseId++;
 		expenses.add(expense);
+		repository.save(expenses);
 		
 		return expense;
 	}
@@ -45,11 +72,13 @@ public class ExpenseManager {
 		Objects.requireNonNull(updatedExpense, "Updated expense must not be null");
 		Expense expense = getExpenseById(id);
 		expense.updateForm(updatedExpense);
+		repository.save(expenses);
 	}
 	
 	public void deleteExpense(long id) {
 		Expense expense = getExpenseById(id);
 		expenses.remove(expense);
+		repository.save(expenses);
 	}
 	
 	public List<Expense> getExpensesByDate(LocalDate date) {

@@ -1,4 +1,8 @@
 package de.nuri.personalfinancemanager.model;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
@@ -20,12 +24,49 @@ public class Expense {
 	               String merchant,
 	               Currency currency) {
 		
-		this.amount      = validateAmount(amount);
-		this.category    = Objects.requireNonNull(category, "Category must not be null");
-		this.date        = Objects.requireNonNull(date, "Date must not be null");
+		this(
+				0L,
+				amount,
+				category,
+				date,
+				description,
+				merchant,
+				currency
+		);
+	}
+	
+	@JsonCreator
+	public Expense(
+			@JsonProperty("id") long id,
+			@JsonProperty("amount") BigDecimal amount,
+			@JsonProperty("category") Category category,
+			@JsonProperty("date") LocalDate date,
+			@JsonProperty("description") String description,
+			@JsonProperty("merchant") String merchant,
+			@JsonProperty("currency") Currency currency
+	) {
+		if (id < 0) {
+			throw new IllegalArgumentException(
+					"Expense ID must not be negative"
+			);
+		}
+		
+		this.id = id;
+		this.amount = validateAmount(amount);
+		this.category = Objects.requireNonNull(
+				category,
+				"Category must not be null"
+		);
+		this.date = Objects.requireNonNull(
+				date,
+				"Date must not be null"
+		);
 		this.description = normalizeOptionalText(description);
-		this.merchant    = normalizeOptionalText(merchant);
-		this.currency    = Objects.requireNonNull(currency, "Currency must not be null");
+		this.merchant = normalizeOptionalText(merchant);
+		this.currency = Objects.requireNonNull(
+				currency,
+				"Currency must not be null"
+		);
 	}
 	
 	

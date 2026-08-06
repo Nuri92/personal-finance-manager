@@ -52,8 +52,14 @@ public class JsonExpenseRepository implements ExpenseRepository {
 		}
 		
 		try {
+			
+			if (Files.size(filePath) == 0) {
+				return List.of();
+			}
+			
 			return objectMapper.readValue(filePath.toFile(), new TypeReference<List<Expense>>() {
 			});
+			
 		} catch (IOException exception) {
 			throw new ExpensePersistenceException(
 					"Could not load expenses from " + filePath, exception

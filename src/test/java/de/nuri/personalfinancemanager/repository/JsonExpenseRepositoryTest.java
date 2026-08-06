@@ -100,4 +100,20 @@ public class JsonExpenseRepositoryTest {
 		assertEquals(originalExpense.getMerchant(), loadedExpense.getMerchant());
 		assertEquals(originalExpense.getCurrency(), loadedExpense.getCurrency());
 	}
+	
+	@Test
+	void load_returnsEmptyListWhenFileIsEmpty() throws IOException {
+		// Arrange
+		Path filePath = tempDirectory.resolve("expenses.json");
+		Files.createFile(filePath);
+		
+		JsonExpenseRepository repository =
+				new JsonExpenseRepository(filePath);
+		
+		// Act
+		List<Expense> loadedExpenses = repository.load();
+		
+		// Assert
+		assertTrue(loadedExpenses.isEmpty());
+	}
 }

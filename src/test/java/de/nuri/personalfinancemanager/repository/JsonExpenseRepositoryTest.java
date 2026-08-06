@@ -128,4 +128,15 @@ public class JsonExpenseRepositoryTest {
 		// Act & Assert
 		assertThrows(ExpensePersistenceException.class, repository::load);
 	}
+	
+	@Test
+	void save_throwsWhenExpensesIsNull() {
+		// Arrange
+		Path filePath = tempDirectory.resolve("expenses.json");
+		
+		JsonExpenseRepository repository = new JsonExpenseRepository(filePath);
+		
+		// Act & Assert
+		assertThrows(NullPointerException.class, () -> repository.save(null));
+	}
 }

@@ -1,5 +1,6 @@
 package de.nuri.personalfinancemanager.repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.nuri.personalfinancemanager.model.Expense;
@@ -46,6 +47,17 @@ public class JsonExpenseRepository implements ExpenseRepository {
 	
 	@Override
 	public List<Expense> load() {
-		return null;
+		if (Files.notExists(filePath)) {
+			return List.of();
+		}
+		
+		try {
+			return objectMapper.readValue(filePath.toFile(), new TypeReference<List<Expense>>() {
+			});
+		} catch (IOException exception) {
+			throw new ExpensePersistenceException(
+					"Could not load expenses from " + filePath, exception
+			);
+		}
 	}
 }

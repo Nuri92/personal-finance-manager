@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JsonExpenseRepositoryTest {
@@ -45,5 +46,58 @@ public class JsonExpenseRepositoryTest {
 		// Assert
 		assertTrue(Files.exists(filePath));
 		assertTrue(Files.size(filePath) > 0);
+	}
+	
+	@Test
+	void load_returnsEmptyListWhenFileDoesNotExist() {
+		// Arrange
+		Path filePath = tempDirectory.resolve("expense.json");
+		
+		JsonExpenseRepository repository = new JsonExpenseRepository(filePath);
+		
+		// Act
+		List<Expense> loadedExpenses = repository.load();
+		
+		// Assert
+		assertTrue(loadedExpenses.isEmpty());
+	}
+	
+	@Test
+	void load_returnsPreviouslySavedExpenses() {
+		// Arrange
+		Path filePath = tempDirectory.resolve("expenses.json");
+		
+		JsonExpenseRepository repository = new JsonExpenseRepository(filePath);
+		
+		Expense originalExpense = new Expense(
+				new BigDecimal("49.99"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 6),
+				"Shoes",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		originalExpense.assignId(1L);
+		
+		List<Expense> expenses = List.of(originalExpense);
+		
+		// Act
+		repository.save(expenses);
+		List<Expense> loadedExpenses = repository.load();
+		
+		// Assert
+		// Assert
+		assertEquals(1, loadedExpenses.size());
+		
+		Expense loadedExpense = loadedExpenses.get(0);
+		
+		assertEquals(originalExpense.getId(), loadedExpense.getId());
+		assertEquals(originalExpense.getAmount(), loadedExpense.getAmount());
+		assertEquals(originalExpense.getCategory(), loadedExpense.getCategory());
+		assertEquals(originalExpense.getDate(), loadedExpense.getDate());
+		assertEquals(originalExpense.getDescription(), loadedExpense.getDescription());
+		assertEquals(originalExpense.getMerchant(), loadedExpense.getMerchant());
+		assertEquals(originalExpense.getCurrency(), loadedExpense.getCurrency());
 	}
 }

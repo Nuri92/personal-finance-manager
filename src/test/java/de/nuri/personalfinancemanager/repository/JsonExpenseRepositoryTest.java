@@ -139,4 +139,52 @@ public class JsonExpenseRepositoryTest {
 		// Act & Assert
 		assertThrows(NullPointerException.class, () -> repository.save(null));
 	}
+	
+	@Test
+	void saveAndLoad_returnsMultipleExpenses() {
+		// Arrange
+		Path                  filePath   = tempDirectory.resolve("expenses.json");
+		JsonExpenseRepository repository = new JsonExpenseRepository(filePath);
+		
+		Expense firstExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 6),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		firstExpense.assignId(1L);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("49.99"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 5),
+				"Shoes",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		secondExpense.assignId(2L);
+		
+		List<Expense> originalExpenses = List.of(
+				firstExpense,
+				secondExpense
+		);
+		
+		// Act
+		repository.save(originalExpenses);
+		List<Expense> loadedExpenses = repository.load();
+		
+		// Assert
+		assertEquals(2, loadedExpenses.size());
+		
+		Expense loadedFirstExpense  = loadedExpenses.get(0);
+		Expense loadedSecondExpense = loadedExpenses.get(1);
+		
+		assertEquals(firstExpense.getId(), loadedFirstExpense.getId());
+		assertEquals(firstExpense.getAmount(), loadedFirstExpense.getAmount());
+		
+		assertEquals(secondExpense.getId(), loadedSecondExpense.getId());
+		assertEquals(secondExpense.getAmount(), loadedSecondExpense.getAmount());
+	}
 }

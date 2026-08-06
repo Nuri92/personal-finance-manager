@@ -13,8 +13,7 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonExpenseRepositoryTest {
 	@TempDir
@@ -115,5 +114,18 @@ public class JsonExpenseRepositoryTest {
 		
 		// Assert
 		assertTrue(loadedExpenses.isEmpty());
+	}
+	
+	@Test
+	void load_throwsWhenJsonIsInvalid() throws Exception {
+		// Arrange
+		Path filePath = tempDirectory.resolve("expenses.json");
+		
+		Files.writeString(filePath, "This is not valid JSON");
+		
+		JsonExpenseRepository repository = new JsonExpenseRepository(filePath);
+		
+		// Act & Assert
+		assertThrows(ExpensePersistenceException.class, repository::load);
 	}
 }

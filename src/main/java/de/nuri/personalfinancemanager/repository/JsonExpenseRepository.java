@@ -57,8 +57,9 @@ public class JsonExpenseRepository implements ExpenseRepository {
 				return List.of();
 			}
 			
-			return objectMapper.readValue(filePath.toFile(), new TypeReference<List<Expense>>() {
-			});
+			return objectMapper.readValue(filePath.toFile(),
+					new TypeReference<List<Expense>>() {
+					});
 			
 		} catch (IOException exception) {
 			throw new ExpensePersistenceException(
@@ -66,4 +67,6 @@ public class JsonExpenseRepository implements ExpenseRepository {
 			);
 		}
 	}
+	
+	
 }

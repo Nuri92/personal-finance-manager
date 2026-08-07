@@ -1,5 +1,6 @@
 package de.nuri.personalfinancemanager.controller;
 
+import de.nuri.personalfinancemanager.model.Category;
 import de.nuri.personalfinancemanager.model.Expense;
 import de.nuri.personalfinancemanager.service.ExpenseManager;
 
@@ -61,7 +62,54 @@ public class ConsoleController {
 	}
 	
 	private void addExpense() {
-		BigDecimal amount = readAmount();
+		//	BigDecimal amount = readAmount();
+		
+		Category category = readCategory();
+	}
+	
+	private Category readCategory() {
+		while (true) {
+			System.out.println("Choose a category: ");
+			System.out.println("Type 1 for food: ");
+			System.out.println("Type 2 for groceries: ");
+			System.out.println("Type 3 for rent: ");
+			System.out.println("Type 4 for transport: ");
+			System.out.println("Type 5 for health: ");
+			System.out.println("Type 6 for shopping: ");
+			System.out.println("Type 7 for subscription: ");
+			System.out.println("Type 8 for entertainment: ");
+			System.out.println("Type 9 for other: ");
+			String input = scanner.nextLine();
+			
+			try {
+				int userInput = Integer.parseInt(input);
+				switch (userInput) {
+					case 1:
+						return Category.FOOD;
+					case 2:
+						return Category.GROCERIES;
+					case 3:
+						return Category.RENT;
+					case 4:
+						return Category.TRANSPORT;
+					case 5:
+						return Category.HEALTH;
+					case 6:
+						return Category.SHOPPING;
+					case 7:
+						return Category.SUBSCRIPTIONS;
+					case 8:
+						return Category.ENTERTAINMENT;
+					case 9:
+						return Category.OTHER;
+					default:
+						System.out.println("Please choose a number between 1 and 9.");
+				}
+			} catch (NumberFormatException exception) {
+				System.out.println("Please enter valid value");
+			}
+			
+		}
 	}
 	
 	private BigDecimal readAmount() {

@@ -1,16 +1,93 @@
 package de.nuri.personalfinancemanager.controller;
 
+import de.nuri.personalfinancemanager.model.Expense;
 import de.nuri.personalfinancemanager.service.ExpenseManager;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class ConsoleController {
 	
 	private final ExpenseManager expenseManager;
+	private final Scanner        scanner;
 	
-	public ConsoleController(ExpenseManager expenseManager) {
+	public ConsoleController(ExpenseManager expenseManager, Scanner scanner) {
 		this.expenseManager = Objects.requireNonNull(
 				expenseManager,
 				"Expense manager must not be null");
+		
+		this.scanner = Objects.requireNonNull(scanner,
+				"Scanner must not be null");
+	}
+	
+	public void run() {
+		boolean running = true;
+		
+		while (running) {
+			showMenu();
+			System.out.println("Tätigen Sie ihre Eingabe: ");
+			String input = scanner.nextLine();
+			int    userInput;
+			
+			try {
+				userInput = Integer.parseInt(input);
+			} catch (NumberFormatException exception) {
+				System.out.println("Bitte geben Sie eine gültige Zahl ein.");
+				continue;
+			}
+			
+			switch (userInput) {
+				case 0:
+					running = false;
+					break;
+				
+				case 1:
+					addExpense();
+					break;
+				
+				case 2:
+					showAllExpenses();
+					break;
+				
+				default:
+					System.out.println(
+							"Ungültige Eingabe, bitte erneut versuchen."
+					);
+			}
+			
+		}
+	}
+	
+	private void addExpense() {
+		BigDecimal amount = readAmount();
+	}
+	
+	private BigDecimal readAmount() {
+		while (true) {
+			System.out.println("Amount: ");
+			String amountInput = scanner.nextLine();
+			try {
+				return new BigDecimal(amountInput);
+			} catch (NumberFormatException exception) {
+				System.out.println("Please enter valid value.");
+			}
+		}
+	}
+	
+	private void showAllExpenses() {
+		List<Expense> expenses = expenseManager.getAllExpenses();
+		System.out.println("Loaded expenses: " + expenses.size());
+		for (Expense expense : expenses) {
+			System.out.println(expense);
+		}
+	}
+	
+	private void showMenu() {
+		System.out.println("Personal Finance Manager");
+		System.out.println("1. Add expense");
+		System.out.println("2. Show all expenses");
+		System.out.println("0. Exit");
 	}
 }

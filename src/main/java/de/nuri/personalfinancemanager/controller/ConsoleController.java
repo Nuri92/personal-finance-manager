@@ -5,6 +5,8 @@ import de.nuri.personalfinancemanager.model.Expense;
 import de.nuri.personalfinancemanager.service.ExpenseManager;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -64,7 +66,37 @@ public class ConsoleController {
 	private void addExpense() {
 		//	BigDecimal amount = readAmount();
 		
-		Category category = readCategory();
+		// Category category = readCategory();
+		
+		// LocalDate date = readDate();
+		
+		String description = readDescription();
+		
+		String merchant = readMerchant();
+		
+	}
+	
+	
+	private String readMerchant() {
+		System.out.println("Merchant: ");
+		return scanner.nextLine();
+	}
+	
+	private String readDescription() {
+		System.out.println("Description: ");
+		return scanner.nextLine();
+	}
+	
+	private LocalDate readDate() {
+		while (true) {
+			System.out.println("Date (yyyy-MM-dd): ");
+			String input = scanner.nextLine();
+			try {
+				return LocalDate.parse(input);
+			} catch (DateTimeParseException exception) {
+				System.out.println("Please enter valid date.");
+			}
+		}
 	}
 	
 	private Category readCategory() {

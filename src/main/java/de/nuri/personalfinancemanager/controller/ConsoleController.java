@@ -65,17 +65,28 @@ public class ConsoleController {
 	}
 	
 	private void addExpense() {
-		//	BigDecimal amount = readAmount();
+		BigDecimal amount      = readAmount();
+		Category   category    = readCategory();
+		LocalDate  date        = readDate();
+		String     description = readDescription();
+		String     merchant    = readMerchant();
+		Currency   currency    = readCurrency();
 		
-		// Category category = readCategory();
+		Expense expense = new Expense(
+				amount,
+				category,
+				date,
+				description,
+				merchant,
+				currency
+		);
 		
-		// LocalDate date = readDate();
+		Expense addedExpense = expenseManager.addExpense(expense);
 		
-		String description = readDescription();
-		
-		String merchant = readMerchant();
-		
-		Currency currency = readCurrency();
+		System.out.println(
+				"Expense successfully added with ID: "
+						+ addedExpense.getId()
+		);
 	}
 	
 	private Currency readCurrency() {

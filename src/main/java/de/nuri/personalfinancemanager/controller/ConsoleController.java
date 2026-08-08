@@ -7,6 +7,7 @@ import de.nuri.personalfinancemanager.service.ExpenseManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Currency;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -74,8 +75,33 @@ public class ConsoleController {
 		
 		String merchant = readMerchant();
 		
+		Currency currency = readCurrency();
 	}
 	
+	private Currency readCurrency() {
+		while (true) {
+			System.out.println("Choose a currency:");
+			System.out.println("Type 1 for Euro (EUR)");
+			System.out.println("Type 2 for US Dollar (USD)");
+			System.out.println("Type 3 for British Pound (GBP)");
+			
+			String input = scanner.nextLine();
+			
+			switch (input) {
+				case "1":
+					return Currency.getInstance("EUR");
+				
+				case "2":
+					return Currency.getInstance("USD");
+				
+				case "3":
+					return Currency.getInstance("GBP");
+				
+				default:
+					System.out.println("Please enter a valid value.");
+			}
+		}
+	}
 	
 	private String readMerchant() {
 		System.out.println("Merchant: ");

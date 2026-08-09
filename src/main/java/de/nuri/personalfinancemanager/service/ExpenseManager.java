@@ -31,7 +31,7 @@ public class ExpenseManager {
 		long highestId = 0;
 		for (Expense expense : expenses
 		) {
-			if (expense.getId() > newExpenseId) {
+			if (expense.getId() >= newExpenseId) {
 				highestId = expense.getId();
 			}
 		}

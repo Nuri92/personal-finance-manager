@@ -7,10 +7,7 @@ import de.nuri.personalfinancemanager.service.ExpenseManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Currency;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class ConsoleController {
 	
@@ -55,12 +52,39 @@ public class ConsoleController {
 					showAllExpenses();
 					break;
 				
+				case 3:
+					deleteExpense();
+					break;
 				default:
 					System.out.println(
 							"Ungültige Eingabe, bitte erneut versuchen."
 					);
 			}
 			
+		}
+	}
+	
+	private void deleteExpense() {
+		while (true) {
+			System.out.println("Type in the Id of the expense u want to delete: ");
+			System.out.println("Or type in 0 to get to the menu: ");
+			String input = scanner.nextLine();
+			if (input.equals("0")) {
+				System.out.println("Back to Main menu.");
+				return;
+			}
+			try {
+				long id = Long.parseLong(input);
+				try {
+					expenseManager.deleteExpense(id);
+					System.out.println("Expense with id " + id + " successfully deleted.");
+				} catch (NoSuchElementException exception) {
+					System.out.println("No expense with id: " + id);
+				}
+				
+			} catch (NumberFormatException exception) {
+				System.out.println("Type in valid value");
+			}
 		}
 	}
 	
@@ -201,10 +225,12 @@ public class ConsoleController {
 		}
 	}
 	
+	
 	private void showMenu() {
 		System.out.println("Personal Finance Manager");
 		System.out.println("1. Add expense");
 		System.out.println("2. Show all expenses");
+		System.out.println("3. delete an Expense");
 		System.out.println("0. Exit");
 	}
 }

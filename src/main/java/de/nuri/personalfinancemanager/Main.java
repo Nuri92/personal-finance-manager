@@ -1,23 +1,21 @@
 package de.nuri.personalfinancemanager;
 
-import de.nuri.personalfinancemanager.model.Expense;
+import de.nuri.personalfinancemanager.controller.ConsoleController;
 import de.nuri.personalfinancemanager.repository.ExpenseRepository;
 import de.nuri.personalfinancemanager.repository.JsonExpenseRepository;
 import de.nuri.personalfinancemanager.service.ExpenseManager;
 
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
 		Path              filePath       = Path.of("data", "expenses.json");
 		ExpenseRepository repository     = new JsonExpenseRepository(filePath);
 		ExpenseManager    expenseManager = new ExpenseManager(repository);
+		Scanner           scanner        = new Scanner(System.in);
+		ConsoleController controller     = new ConsoleController(expenseManager, scanner);
 		
-		List<Expense> expenses = expenseManager.getAllExpenses();
-		System.out.println("Loaded expenses: " + expenses.size());
-		for (Expense e : expenses) {
-			System.out.println(e);
-		}
+		controller.run();
 	}
 }

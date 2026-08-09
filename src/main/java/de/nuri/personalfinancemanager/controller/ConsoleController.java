@@ -88,41 +88,40 @@ public class ConsoleController {
 				
 				try {
 					expenseManager.getExpenseById(id);
-					
-					BigDecimal amount      = readAmount();
-					Category category      = readCategory();
-					LocalDate date         = readDate();
-					String description     = readDescription();
-					String merchant        = readMerchant();
-					Currency currency      = readCurrency();
-					
-					Expense updatedExpense = new Expense(
-							amount,
-							category,
-							date,
-							description,
-							merchant,
-							currency
-					);
-					
+					Expense updatedExpense = createExpense();
 					expenseManager.updateExpense(id, updatedExpense);
-					
-					System.out.println(
-							"Expense with ID " + id + " successfully updated."
-					);
+					System.out.println("Expense with ID " + id + " successfully updated.");
 					
 					return;
 					
 				} catch (NoSuchElementException exception) {
-					System.out.println(
-							"No expense found with ID: " + id + ". Please try again."
-					);
+					System.out.println("No expense found with ID: " + id + ". Please try again.");
 				}
 				
 			} catch (NumberFormatException exception) {
 				System.out.println("Please enter a valid ID.");
 			}
 		}
+	}
+	
+	private Expense createExpense() {
+		BigDecimal amount      = readAmount();
+		Category   category    = readCategory();
+		LocalDate  date        = readDate();
+		String     description = readDescription();
+		String     merchant    = readMerchant();
+		Currency   currency    = readCurrency();
+		
+		Expense expense = new Expense(
+				amount,
+				category,
+				date,
+				description,
+				merchant,
+				currency
+		);
+		
+		return expense;
 	}
 	
 	private void deleteExpense() {
@@ -150,28 +149,9 @@ public class ConsoleController {
 	}
 	
 	private void addExpense() {
-		BigDecimal amount      = readAmount();
-		Category   category    = readCategory();
-		LocalDate  date        = readDate();
-		String     description = readDescription();
-		String     merchant    = readMerchant();
-		Currency   currency    = readCurrency();
-		
-		Expense expense = new Expense(
-				amount,
-				category,
-				date,
-				description,
-				merchant,
-				currency
-		);
-		
+		Expense expense      = createExpense();
 		Expense addedExpense = expenseManager.addExpense(expense);
-		
-		System.out.println(
-				"Expense successfully added with ID: "
-						+ addedExpense.getId()
-		);
+		System.out.println("Expense successfully added with ID: " + addedExpense.getId());
 	}
 	
 	private Currency readCurrency() {

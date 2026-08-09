@@ -58,12 +58,34 @@ public class ConsoleController {
 				case 4:
 					updateExpense();
 					break;
+				case 5:
+					filterByCategory();
 				default:
 					System.out.println(
 							"Ungültige Eingabe, bitte erneut versuchen."
 					);
 			}
 			
+		}
+	}
+	
+	private void filterByCategory() {
+		Category category = readCategory();
+		
+		List<Expense> filteredList =
+				expenseManager.getExpensesByCategory(category);
+		
+		if (filteredList.isEmpty()) {
+			System.out.println(
+					"No expenses found for category: " + category
+			);
+			return;
+		}
+		
+		System.out.println("Expenses for category: " + category);
+		
+		for (Expense expense : filteredList) {
+			System.out.println(expense);
 		}
 	}
 	
@@ -271,8 +293,9 @@ public class ConsoleController {
 		System.out.println("Personal Finance Manager");
 		System.out.println("1. Add expense");
 		System.out.println("2. Show all expenses");
-		System.out.println("3. delete an Expense");
-		System.out.println("4. update an Expense");
+		System.out.println("3. Delete an Expense");
+		System.out.println("4. Update an Expense");
+		System.out.println("5. Filter expense by category:");
 		System.out.println("0. Exit");
 	}
 }

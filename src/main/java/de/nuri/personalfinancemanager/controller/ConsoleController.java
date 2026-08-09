@@ -55,12 +55,73 @@ public class ConsoleController {
 				case 3:
 					deleteExpense();
 					break;
+				case 4:
+					updateExpense();
+					break;
 				default:
 					System.out.println(
 							"Ungültige Eingabe, bitte erneut versuchen."
 					);
 			}
 			
+		}
+	}
+	
+	private void updateExpense() {
+		while (true) {
+			System.out.println("Update Expense:");
+			System.out.println("Enter 0 to exit or enter an ID to update an Expense:");
+			
+			String input = scanner.nextLine();
+			
+			if (input.equals("0")) {
+				return;
+			}
+			
+			try {
+				long id = Long.parseLong(input);
+				
+				if (id <= 0) {
+					System.out.println("Expense ID must be greater than zero.");
+					continue;
+				}
+				
+				try {
+					expenseManager.getExpenseById(id);
+					
+					BigDecimal amount      = readAmount();
+					Category category      = readCategory();
+					LocalDate date         = readDate();
+					String description     = readDescription();
+					String merchant        = readMerchant();
+					Currency currency      = readCurrency();
+					
+					Expense updatedExpense = new Expense(
+							amount,
+							category,
+							date,
+							description,
+							merchant,
+							currency
+					);
+					
+					expenseManager.updateExpense(id, updatedExpense);
+					
+					System.out.println(
+							"Expense with ID " + id + " successfully updated."
+					);
+					
+					return;
+					
+				} catch (NoSuchElementException exception) {
+					System.out.println(
+							"No expense found with ID: " + id + ". Please try again."
+					);
+				}
+				
+			} catch (NumberFormatException exception) {
+				System.out.println("Please enter a valid ID.");
+			}
 		}
 	}
 	
@@ -231,6 +292,7 @@ public class ConsoleController {
 		System.out.println("1. Add expense");
 		System.out.println("2. Show all expenses");
 		System.out.println("3. delete an Expense");
+		System.out.println("4. update an Expense");
 		System.out.println("0. Exit");
 	}
 }

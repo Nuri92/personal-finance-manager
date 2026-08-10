@@ -67,12 +67,34 @@ public class ConsoleController {
 				case 7:
 					getTotalAmountByCategory();
 					break;
+				case 8:
+					sortByAmountAscending();
+					break;
+				case 9:
+					sortByAmountDescending();
 				default:
 					System.out.println(
 							"Ungültige Eingabe, bitte erneut versuchen."
 					);
 			}
 			
+		}
+	}
+	
+	private void sortByAmountDescending() {
+		List<Expense> sortedList = expenseManager.sortByAmountDescending();
+		printExpenses(sortedList);
+	}
+	
+	private void sortByAmountAscending() {
+		List<Expense> sortedList = expenseManager.sortByAmountAscending();
+		printExpenses(sortedList);
+		
+	}
+	
+	private void printExpenses(List<Expense> expenses) {
+		for (Expense expense : expenses) {
+			System.out.println(expense);
 		}
 	}
 	
@@ -103,9 +125,7 @@ public class ConsoleController {
 		
 		System.out.println("Expenses for category: " + category);
 		
-		for (Expense expense : filteredList) {
-			System.out.println(expense);
-		}
+		printExpenses(filteredList);
 	}
 	
 	private void updateExpense() {
@@ -302,9 +322,7 @@ public class ConsoleController {
 	private void showAllExpenses() {
 		List<Expense> expenses = expenseManager.getAllExpenses();
 		System.out.println("Loaded expenses: " + expenses.size());
-		for (Expense expense : expenses) {
-			System.out.println(expense);
-		}
+		printExpenses(expenses);
 	}
 	
 	
@@ -317,6 +335,8 @@ public class ConsoleController {
 		System.out.println("5. Filter expense by category");
 		System.out.println("6. Get total amount");
 		System.out.println("7. Get total amount by category");
+		System.out.println("8. sort by amount ascending");
+		System.out.println("9. sort by amount descending");
 		System.out.println("0. Exit");
 	}
 }

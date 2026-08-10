@@ -72,6 +72,13 @@ public class ConsoleController {
 					break;
 				case 9:
 					sortByAmountDescending();
+					break;
+				case 10:
+					sortByDateAscending();
+					break;
+				case 11:
+					sortByDateDescending();
+					break;
 				default:
 					System.out.println(
 							"Ungültige Eingabe, bitte erneut versuchen."
@@ -79,6 +86,16 @@ public class ConsoleController {
 			}
 			
 		}
+	}
+	
+	private void sortByDateDescending() {
+		List<Expense> sortedExpenses = expenseManager.sortedByDateDescending();
+		printExpenses(sortedExpenses);
+	}
+	
+	private void sortByDateAscending() {
+		List<Expense> sortedExpenses = expenseManager.sortedByDateAscending();
+		printExpenses(sortedExpenses);
 	}
 	
 	private void sortByAmountDescending() {
@@ -337,6 +354,8 @@ public class ConsoleController {
 		System.out.println("7. Get total amount by category");
 		System.out.println("8. sort by amount ascending");
 		System.out.println("9. sort by amount descending");
+		System.out.println("10. sort by date ascending");
+		System.out.println("11. sort by date descending");
 		System.out.println("0. Exit");
 	}
 }

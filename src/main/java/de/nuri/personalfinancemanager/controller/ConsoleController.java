@@ -126,12 +126,12 @@ public class ConsoleController {
 	}
 	
 	private void sortByDateDescending() {
-		List<Expense> sortedExpenses = expenseManager.sortedByDateDescending();
+		List<Expense> sortedExpenses = expenseManager.sortByDateDescending();
 		printExpenses(sortedExpenses);
 	}
 	
 	private void sortByDateAscending() {
-		List<Expense> sortedExpenses = expenseManager.sortedByDateAscending();
+		List<Expense> sortedExpenses = expenseManager.sortByDateAscending();
 		printExpenses(sortedExpenses);
 	}
 	

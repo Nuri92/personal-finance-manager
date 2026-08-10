@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 
 public class ExpenseManager {
 	
-	private       long              newExpenseId = 1;
+	private       long              newExpenseId;
 	private final List<Expense>     expenses;
 	private final ExpenseRepository repository;
 	
@@ -29,9 +29,9 @@ public class ExpenseManager {
 	
 	private long determineNextExpenseId() {
 		long highestId = 0;
-		for (Expense expense : expenses
-		) {
-			if (expense.getId() >= newExpenseId) {
+		
+		for (Expense expense : expenses) {
+			if (expense.getId() > highestId) {
 				highestId = expense.getId();
 			}
 		}
@@ -50,8 +50,7 @@ public class ExpenseManager {
 	}
 	
 	public List<Expense> getAllExpenses() {
-		List<Expense> copyOfExpenses = new ArrayList<>(expenses);
-		return copyOfExpenses;
+		return new ArrayList<>(expenses);
 	}
 	
 	public Expense getExpenseById(long id) {
@@ -116,11 +115,11 @@ public class ExpenseManager {
 		return sortExpenses((expense1, expense2) -> expense2.getAmount().compareTo(expense1.getAmount()));
 	}
 	
-	public List<Expense> sortedByDateAscending() {
+	public List<Expense> sortByDateAscending() {
 		return sortExpenses((expense1, expense2) -> expense1.getDate().compareTo(expense2.getDate()));
 	}
 	
-	public List<Expense> sortedByDateDescending() {
+	public List<Expense> sortByDateDescending() {
 		return sortExpenses((expense1, expense2) -> expense2.getDate().compareTo(expense1.getDate()));
 	}
 	

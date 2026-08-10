@@ -60,6 +60,10 @@ public class ConsoleController {
 					break;
 				case 5:
 					filterByCategory();
+					break;
+				case 6:
+					getTotalAmount();
+					break;
 				default:
 					System.out.println(
 							"Ungültige Eingabe, bitte erneut versuchen."
@@ -67,6 +71,11 @@ public class ConsoleController {
 			}
 			
 		}
+	}
+	
+	private void getTotalAmount() {
+		BigDecimal totalAmount = expenseManager.getTotalAmount();
+		System.out.println("Total Amount: " + totalAmount);
 	}
 	
 	private void filterByCategory() {
@@ -296,6 +305,7 @@ public class ConsoleController {
 		System.out.println("3. Delete an Expense");
 		System.out.println("4. Update an Expense");
 		System.out.println("5. Filter expense by category:");
+		System.out.println("6. Get total amount");
 		System.out.println("0. Exit");
 	}
 }

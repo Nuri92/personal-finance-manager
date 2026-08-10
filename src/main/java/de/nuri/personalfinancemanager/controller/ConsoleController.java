@@ -53,38 +53,49 @@ public class ConsoleController {
 					break;
 				
 				case 3:
-					deleteExpense();
-					break;
-				case 4:
 					updateExpense();
 					break;
+				
+				case 4:
+					deleteExpense();
+					break;
+				
 				case 5:
 					filterByCategory();
 					break;
+				
 				case 6:
-					getTotalAmount();
+					getExpensesByMerchant();
 					break;
+				
 				case 7:
-					getTotalAmountByCategory();
+					getExpensesByDate();
 					break;
+				
 				case 8:
 					sortByAmountAscending();
 					break;
+				
 				case 9:
 					sortByAmountDescending();
 					break;
+				
 				case 10:
 					sortByDateAscending();
 					break;
+				
 				case 11:
 					sortByDateDescending();
 					break;
+				
 				case 12:
-					getExpensesByMerchant();
+					getTotalAmount();
 					break;
+				
 				case 13:
-					getExpensesByDate();
+					getTotalAmountByCategory();
 					break;
+				
 				default:
 					System.out.println(
 							"Ungültige Eingabe, bitte erneut versuchen."
@@ -105,7 +116,6 @@ public class ConsoleController {
 	}
 	
 	private void getExpensesByMerchant() {
-		System.out.println("Type in a merchant: ");
 		String        input            = readMerchant();
 		List<Expense> matchingExpenses = expenseManager.getExpensesByMerchant(input);
 		if (matchingExpenses.isEmpty()) {
@@ -217,7 +227,7 @@ public class ConsoleController {
 		String     merchant    = readMerchant();
 		Currency   currency    = readCurrency();
 		
-		Expense expense = new Expense(
+		return new Expense(
 				amount,
 				category,
 				date,
@@ -225,8 +235,6 @@ public class ConsoleController {
 				merchant,
 				currency
 		);
-		
-		return expense;
 	}
 	
 	private void deleteExpense() {
@@ -240,6 +248,10 @@ public class ConsoleController {
 			}
 			try {
 				long id = Long.parseLong(input);
+				if (id <= 0) {
+					System.out.println("Expense ID must be greater than zero.");
+					continue;
+				}
 				try {
 					expenseManager.deleteExpense(id);
 					System.out.println("Expense with id " + id + " successfully deleted.");
@@ -354,9 +366,16 @@ public class ConsoleController {
 	private BigDecimal readAmount() {
 		while (true) {
 			System.out.println("Amount: ");
-			String amountInput = scanner.nextLine();
+			String input = scanner.nextLine();
 			try {
-				return new BigDecimal(amountInput);
+				BigDecimal amount = new BigDecimal(input);
+				
+				if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+					System.out.println("Amount must be greater than zero.");
+					continue;
+				}
+				
+				return amount;
 			} catch (NumberFormatException exception) {
 				System.out.println("Please enter valid value.");
 			}
@@ -372,19 +391,24 @@ public class ConsoleController {
 	
 	private void showMenu() {
 		System.out.println("Personal Finance Manager");
+		
 		System.out.println("1. Add expense");
 		System.out.println("2. Show all expenses");
-		System.out.println("3. Delete an Expense");
-		System.out.println("4. Update an Expense");
-		System.out.println("5. Filter expense by category");
-		System.out.println("6. Get total amount");
-		System.out.println("7. Get total amount by category");
-		System.out.println("8. sort by amount ascending");
-		System.out.println("9. sort by amount descending");
-		System.out.println("10. sort by date ascending");
-		System.out.println("11. sort by date descending");
-		System.out.println("12. get expenses by merchant");
-		System.out.println("13. get expenses by date");
+		System.out.println("3. Update expense");
+		System.out.println("4. Delete expense");
+		
+		System.out.println("5. Filter expenses by category");
+		System.out.println("6. Filter expenses by merchant");
+		System.out.println("7. Filter expenses by date");
+		
+		System.out.println("8. Sort by amount ascending");
+		System.out.println("9. Sort by amount descending");
+		System.out.println("10. Sort by date ascending");
+		System.out.println("11. Sort by date descending");
+		
+		System.out.println("12. Get total amount");
+		System.out.println("13. Get total amount by category");
+		
 		System.out.println("0. Exit");
 	}
 }

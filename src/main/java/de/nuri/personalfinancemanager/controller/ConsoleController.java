@@ -79,6 +79,12 @@ public class ConsoleController {
 				case 11:
 					sortByDateDescending();
 					break;
+				case 12:
+					getExpensesByMerchant();
+					break;
+				case 13:
+					getExpensesByDate();
+					break;
 				default:
 					System.out.println(
 							"Ungültige Eingabe, bitte erneut versuchen."
@@ -86,6 +92,27 @@ public class ConsoleController {
 			}
 			
 		}
+	}
+	
+	private void getExpensesByDate() {
+		LocalDate     date             = readDate();
+		List<Expense> matchingExpenses = expenseManager.getExpensesByDate(date);
+		if (matchingExpenses.isEmpty()) {
+			System.out.println("No matching expenses found");
+			return;
+		}
+		printExpenses(matchingExpenses);
+	}
+	
+	private void getExpensesByMerchant() {
+		System.out.println("Type in a merchant: ");
+		String        input            = readMerchant();
+		List<Expense> matchingExpenses = expenseManager.getExpensesByMerchant(input);
+		if (matchingExpenses.isEmpty()) {
+			System.out.println("No matching expenses found");
+			return;
+		}
+		printExpenses(matchingExpenses);
 	}
 	
 	private void sortByDateDescending() {
@@ -356,6 +383,8 @@ public class ConsoleController {
 		System.out.println("9. sort by amount descending");
 		System.out.println("10. sort by date ascending");
 		System.out.println("11. sort by date descending");
+		System.out.println("12. get expenses by merchant");
+		System.out.println("13. get expenses by date");
 		System.out.println("0. Exit");
 	}
 }

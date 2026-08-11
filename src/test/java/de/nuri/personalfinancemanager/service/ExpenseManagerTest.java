@@ -763,4 +763,160 @@ class ExpenseManagerTest {
 		assertEquals(fourthExpense.getAmount(), sortedList.get(4).getAmount());
 		assertEquals(thirdExpense.getAmount(), sortedList.get(5).getAmount());
 	}
+	
+	@Test
+	void sortExpensesByDateAscending() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		Expense firstExpense = new Expense(
+				new BigDecimal("120.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("250.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 4),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 2),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fifthExpense = new Expense(
+				new BigDecimal("102.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 1),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense sixthExpense = new Expense(
+				new BigDecimal("205.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 6),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		expenseManager.addExpense(fifthExpense);
+		expenseManager.addExpense(sixthExpense);
+		
+		// Act
+		List<Expense> sortedList = expenseManager.sortByDateAscending();
+		
+		// Assert
+		assertEquals(6, sortedList.size());
+		assertEquals(fifthExpense.getDate(), sortedList.get(0).getDate());
+		assertEquals(fourthExpense.getDate(), sortedList.get(1).getDate());
+		assertEquals(thirdExpense.getDate(), sortedList.get(2).getDate());
+		assertEquals(secondExpense.getDate(), sortedList.get(3).getDate());
+		assertEquals(firstExpense.getDate(), sortedList.get(4).getDate());
+		assertEquals(sixthExpense.getDate(), sortedList.get(5).getDate());
+	}
+	
+	@Test
+	void sortExpensesByDateDescending() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		Expense firstExpense = new Expense(
+				new BigDecimal("120.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("250.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 4),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 2),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fifthExpense = new Expense(
+				new BigDecimal("102.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 1),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense sixthExpense = new Expense(
+				new BigDecimal("205.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 6),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		expenseManager.addExpense(fifthExpense);
+		expenseManager.addExpense(sixthExpense);
+		
+		// Act
+		List<Expense> sortedList = expenseManager.sortByDateDescending();
+		
+		// Assert
+		assertEquals(6, sortedList.size());
+		assertEquals(sixthExpense.getDate(), sortedList.get(0).getDate());
+		assertEquals(firstExpense.getDate(), sortedList.get(1).getDate());
+		assertEquals(secondExpense.getDate(), sortedList.get(2).getDate());
+		assertEquals(thirdExpense.getDate(), sortedList.get(3).getDate());
+		assertEquals(fourthExpense.getDate(), sortedList.get(4).getDate());
+		assertEquals(fifthExpense.getDate(), sortedList.get(5).getDate());
+	}
 }

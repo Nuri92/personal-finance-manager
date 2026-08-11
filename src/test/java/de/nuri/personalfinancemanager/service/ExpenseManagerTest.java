@@ -39,6 +39,66 @@ class ExpenseManagerTest {
 	}
 	
 	@Test
+	void addExpense_usesHighestExistingIdPlusOne() {
+		// Arrange
+		InMemoryExpenseRepository repository =
+				new InMemoryExpenseRepository();
+		
+		Expense firstExpense = new Expense(
+				new BigDecimal("13.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Breakfast",
+				"Traumkuh",
+				Currency.getInstance("EUR")
+		);
+		firstExpense.assignId(2L);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("20.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 4),
+				"Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		secondExpense.assignId(7L);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("8.50"),
+				Category.TRANSPORT,
+				LocalDate.of(2026, 8, 5),
+				"Ticket",
+				"HVV",
+				Currency.getInstance("EUR")
+		);
+		thirdExpense.assignId(4L);
+		
+		repository.save(
+				List.of(firstExpense, secondExpense, thirdExpense)
+		);
+		
+		ExpenseManager expenseManager =
+				new ExpenseManager(repository);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("9.99"),
+				Category.ENTERTAINMENT,
+				LocalDate.of(2026, 8, 6),
+				"Cinema",
+				"UCI",
+				Currency.getInstance("EUR")
+		);
+		
+		// Act
+		Expense addedExpense =
+				expenseManager.addExpense(fourthExpense);
+		
+		// Assert
+		assertEquals(8L, addedExpense.getId());
+	}
+	
+	@Test
 	void addExpense_assignsIdAndStoresExpenses() {
 		// Arrange: Testdaten und die zu testenden Objekte vorbereiten
 		ExpenseManager expenseManager = new ExpenseManager();

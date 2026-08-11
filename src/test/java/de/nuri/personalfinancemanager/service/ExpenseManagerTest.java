@@ -1168,5 +1168,88 @@ class ExpenseManagerTest {
 		assertTrue(expenses.isEmpty());
 	}
 	
-	
+	@Test
+	void sortByDateAscending_doesNotChangeInternalOrder() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		
+		Expense firstExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fifthExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense sixthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 1),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		expenseManager.addExpense(fifthExpense);
+		expenseManager.addExpense(sixthExpense);
+
+// Act
+		List<Expense> sortedExpenses =
+				expenseManager.sortByDateAscending();
+		
+		List<Expense> originalExpenses =
+				expenseManager.getAllExpenses();
+		
+		// Assert sorted copy
+		assertSame(sixthExpense, sortedExpenses.get(0));
+		
+		// Assert original order unchanged
+		assertSame(firstExpense, originalExpenses.get(0));
+		assertSame(secondExpense, originalExpenses.get(1));
+		assertSame(thirdExpense, originalExpenses.get(2));
+		assertSame(fourthExpense, originalExpenses.get(3));
+		assertSame(fifthExpense, originalExpenses.get(4));
+		assertSame(sixthExpense, originalExpenses.get(5));
+	}
 }

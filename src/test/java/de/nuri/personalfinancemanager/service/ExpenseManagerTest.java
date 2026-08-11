@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -1048,7 +1049,7 @@ class ExpenseManagerTest {
 		);
 		
 		BigDecimal expectedAmountShopping = BigDecimal.ZERO;
-		BigDecimal expectedAmountFood = BigDecimal.ZERO;
+		BigDecimal expectedAmountFood     = BigDecimal.ZERO;
 		
 		expectedAmountShopping = expectedAmountShopping.add(secondExpense.getAmount());
 		expectedAmountShopping = expectedAmountShopping.add(fourthExpense.getAmount());
@@ -1071,6 +1072,80 @@ class ExpenseManagerTest {
 		
 		assertEquals(expectedAmountShopping, totalAmountShopping);
 		assertEquals(expectedAmountFood, totalAmountFood);
+	}
+	
+	@Test
+	void getTotalAmountForEachCategory() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		
+		Expense firstExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fifthExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense sixthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		expenseManager.addExpense(fifthExpense);
+		expenseManager.addExpense(sixthExpense);
+		
+		// Act
+		Map<Category, BigDecimal> totals = expenseManager.getTotalAmountForEachCategory();
+		
+		assertEquals(new BigDecimal("37.50"), totals.get(Category.FOOD));
+		assertEquals(new BigDecimal("75.00"), totals.get(Category.SHOPPING));
+		assertEquals(2, totals.size());
 	}
 	
 }

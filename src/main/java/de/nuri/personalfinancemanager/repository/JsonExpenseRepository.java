@@ -41,7 +41,7 @@ public class JsonExpenseRepository implements ExpenseRepository {
 					.writeValue(filePath.toFile(), expenses);
 			
 		} catch (IOException exception) {
-			throw new ExpensePersistenceException("Could not save expense to " + filePath, exception);
+			throw new ExpensePersistenceException("Could not save expenses to " + filePath, exception);
 		}
 	}
 	

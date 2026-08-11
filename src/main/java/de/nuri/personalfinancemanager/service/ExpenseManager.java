@@ -70,7 +70,7 @@ public class ExpenseManager {
 	public void updateExpense(long id, Expense updatedExpense) {
 		Objects.requireNonNull(updatedExpense, "Updated expense must not be null");
 		Expense expense = getExpenseById(id);
-		expense.updateForm(updatedExpense);
+		expense.updateFrom(updatedExpense);
 		repository.save(expenses);
 	}
 	

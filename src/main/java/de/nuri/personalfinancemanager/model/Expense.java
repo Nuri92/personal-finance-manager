@@ -51,19 +51,19 @@ public class Expense {
 			);
 		}
 		
-		this.id = id;
-		this.amount = validateAmount(amount);
-		this.category = Objects.requireNonNull(
+		this.id          = id;
+		this.amount      = validateAmount(amount);
+		this.category    = Objects.requireNonNull(
 				category,
 				"Category must not be null"
 		);
-		this.date = Objects.requireNonNull(
+		this.date        = Objects.requireNonNull(
 				date,
 				"Date must not be null"
 		);
 		this.description = normalizeOptionalText(description);
-		this.merchant = normalizeOptionalText(merchant);
-		this.currency = Objects.requireNonNull(
+		this.merchant    = normalizeOptionalText(merchant);
+		this.currency    = Objects.requireNonNull(
 				currency,
 				"Currency must not be null"
 		);
@@ -110,7 +110,7 @@ public class Expense {
 		this.id = id;
 	}
 	
-	public void updateForm(Expense updatedExpense) {
+	public void updateFrom(Expense updatedExpense) {
 		Objects.requireNonNull(updatedExpense, "Updated expense must not be null");
 		changeAmount(updatedExpense.getAmount());
 		changeCategory(updatedExpense.getCategory());
@@ -167,7 +167,7 @@ public class Expense {
 				", date=" + date +
 				", description='" + description + '\'' +
 				", merchant='" + merchant + '\'' +
-				", currency='" + currency + '\'' +
+				", currency='" + currency +
 				'}';
 	}
 }

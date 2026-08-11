@@ -377,4 +377,390 @@ class ExpenseManagerTest {
 		assertEquals(3L, addedExpense.getId());
 		assertEquals(3, secondManager.getAllExpenses().size());
 	}
+	
+	@Test
+	void getExpensesByCategory() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		Expense firstExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 5),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 5),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fifthExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense sixthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 5),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		expenseManager.addExpense(fifthExpense);
+		expenseManager.addExpense(sixthExpense);
+		
+		// Act
+		List<Expense> expenses = expenseManager.getExpensesByCategory(Category.FOOD);
+		
+		// Assert
+		assertEquals(3, expenses.size());
+		
+		for (Expense expense : expenses) {
+			assertEquals(Category.FOOD, expense.getCategory());
+		}
+	}
+	
+	@Test
+	void getExpensesByDate() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		LocalDate      targetDate     = LocalDate.of(2026, 8, 3);
+		Expense firstExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fifthExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense sixthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		expenseManager.addExpense(fifthExpense);
+		expenseManager.addExpense(sixthExpense);
+		
+		// Act
+		List<Expense> expenses = expenseManager.getExpensesByDate(targetDate);
+		
+		// Assert
+		assertEquals(4, expenses.size());
+		
+		for (Expense expense : expenses) {
+			assertEquals(targetDate, expense.getDate());
+		}
+	}
+	
+	@Test
+	void getExpensesByMerchant() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		String         targetMerchant = "ReWe";
+		Expense firstExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fifthExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense sixthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		expenseManager.addExpense(fifthExpense);
+		expenseManager.addExpense(sixthExpense);
+		
+		// Act
+		List<Expense> expenses = expenseManager.getExpensesByMerchant(targetMerchant);
+		
+		// Assert
+		assertEquals(3, expenses.size());
+		
+		for (Expense expense : expenses) {
+			assertEquals("Rewe", expense.getMerchant());
+		}
+	}
+	
+	@Test
+	void sortExpensesByAmountAscending() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		Expense firstExpense = new Expense(
+				new BigDecimal("120.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("250.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fifthExpense = new Expense(
+				new BigDecimal("102.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense sixthExpense = new Expense(
+				new BigDecimal("205.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		expenseManager.addExpense(fifthExpense);
+		expenseManager.addExpense(sixthExpense);
+		
+		// Act
+		List<Expense> sortedList = expenseManager.sortByAmountAscending();
+		
+		// Assert
+		assertEquals(6, sortedList.size());
+		assertEquals(thirdExpense.getAmount(), sortedList.get(0).getAmount());
+		assertEquals(fourthExpense.getAmount(), sortedList.get(1).getAmount());
+		assertEquals(fifthExpense.getAmount(), sortedList.get(2).getAmount());
+		assertEquals(firstExpense.getAmount(), sortedList.get(3).getAmount());
+		assertEquals(sixthExpense.getAmount(), sortedList.get(4).getAmount());
+		assertEquals(secondExpense.getAmount(), sortedList.get(5).getAmount());
+	}
+	
+	@Test
+	void sortExpensesByAmountDescending() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		Expense firstExpense = new Expense(
+				new BigDecimal("120.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("250.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fifthExpense = new Expense(
+				new BigDecimal("102.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense sixthExpense = new Expense(
+				new BigDecimal("205.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		expenseManager.addExpense(fifthExpense);
+		expenseManager.addExpense(sixthExpense);
+		
+		// Act
+		List<Expense> sortedList = expenseManager.sortByAmountDescending();
+		
+		// Assert
+		assertEquals(6, sortedList.size());
+		assertEquals(secondExpense.getAmount(), sortedList.get(0).getAmount());
+		assertEquals(sixthExpense.getAmount(), sortedList.get(1).getAmount());
+		assertEquals(firstExpense.getAmount(), sortedList.get(2).getAmount());
+		assertEquals(fifthExpense.getAmount(), sortedList.get(3).getAmount());
+		assertEquals(fourthExpense.getAmount(), sortedList.get(4).getAmount());
+		assertEquals(thirdExpense.getAmount(), sortedList.get(5).getAmount());
+	}
 }

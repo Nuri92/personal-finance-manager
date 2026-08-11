@@ -919,4 +919,72 @@ class ExpenseManagerTest {
 		assertEquals(fourthExpense.getDate(), sortedList.get(4).getDate());
 		assertEquals(fifthExpense.getDate(), sortedList.get(5).getDate());
 	}
+	
+	@Test
+	void getTotalAmount() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		BigDecimal     expectedAmount = BigDecimal.ZERO;
+		Expense firstExpense = new Expense(
+				new BigDecimal("120.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		expectedAmount = expectedAmount.add(firstExpense.getAmount());
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("250.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 4),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		expectedAmount = expectedAmount.add(secondExpense.getAmount());
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		expectedAmount = expectedAmount.add(thirdExpense.getAmount());
+		
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 2),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		expectedAmount = expectedAmount.add(fourthExpense.getAmount());
+		
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		
+		// Act
+		BigDecimal totalAmount = expenseManager.getTotalAmount();
+		
+		// Assert
+		assertEquals(expectedAmount, totalAmount);
+	}
+	
+	@Test
+	void getTotalAmount_returnsZeroWhenNoExpensesExist() {
+		ExpenseManager expenseManager = new ExpenseManager();
+		
+		BigDecimal totalAmount = expenseManager.getTotalAmount();
+		
+		assertEquals(BigDecimal.ZERO, totalAmount);
+	}
 }

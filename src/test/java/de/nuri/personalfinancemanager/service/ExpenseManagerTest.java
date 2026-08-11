@@ -1148,4 +1148,25 @@ class ExpenseManagerTest {
 		assertEquals(2, totals.size());
 	}
 	
+	@Test
+	void getExpensesByDate_throwsWhenDateIsNull() {
+		ExpenseManager expenseManager = new ExpenseManager();
+		
+		assertThrows(
+				NullPointerException.class,
+				() -> expenseManager.getExpensesByDate(null)
+		);
+	}
+	
+	@Test
+	void getExpensesByCategory_returnsEmptyListWhenNoExpenseMatches() {
+		ExpenseManager expenseManager = new ExpenseManager();
+		
+		List<Expense> expenses =
+				expenseManager.getExpensesByCategory(Category.FOOD);
+		
+		assertTrue(expenses.isEmpty());
+	}
+	
+	
 }

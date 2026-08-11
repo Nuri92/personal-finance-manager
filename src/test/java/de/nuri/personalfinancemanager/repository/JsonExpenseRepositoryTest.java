@@ -187,4 +187,39 @@ public class JsonExpenseRepositoryTest {
 		assertEquals(secondExpense.getId(), loadedSecondExpense.getId());
 		assertEquals(secondExpense.getAmount(), loadedSecondExpense.getAmount());
 	}
+	
+	@Test
+	void constructor_throwsWhenFilePathIsNull() {
+		assertThrows(
+				NullPointerException.class,
+				() -> new JsonExpenseRepository(null)
+		);
+	}
+	
+	@Test
+	void save_createsMissingParentDirectories() {
+		// Arrange
+		Path filePath =
+				tempDirectory.resolve("nested/data/expenses.json");
+		
+		JsonExpenseRepository repository =
+				new JsonExpenseRepository(filePath);
+		
+		Expense expense = new Expense(
+				new BigDecimal("19.99"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 6),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		expense.assignId(1L);
+		
+		// Act
+		repository.save(List.of(expense));
+		
+		// Assert
+		assertTrue(Files.exists(filePath));
+	}
 }

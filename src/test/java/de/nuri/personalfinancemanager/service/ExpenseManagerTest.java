@@ -987,4 +987,90 @@ class ExpenseManagerTest {
 		
 		assertEquals(BigDecimal.ZERO, totalAmount);
 	}
+	
+	@Test
+	void getTotalAmountByCategory() {
+		// Arrange
+		ExpenseManager expenseManager = new ExpenseManager();
+		
+		Expense firstExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense secondExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense thirdExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 3),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fourthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense fifthExpense = new Expense(
+				new BigDecimal("12.50"),
+				Category.FOOD,
+				LocalDate.of(2026, 8, 5),
+				"Lunch",
+				"Rewe",
+				Currency.getInstance("EUR")
+		);
+		
+		Expense sixthExpense = new Expense(
+				new BigDecimal("25.00"),
+				Category.SHOPPING,
+				LocalDate.of(2026, 8, 3),
+				"T-Shirt",
+				"Zalando",
+				Currency.getInstance("EUR")
+		);
+		
+		BigDecimal expectedAmountShopping = BigDecimal.ZERO;
+		BigDecimal expectedAmountFood = BigDecimal.ZERO;
+		
+		expectedAmountShopping = expectedAmountShopping.add(secondExpense.getAmount());
+		expectedAmountShopping = expectedAmountShopping.add(fourthExpense.getAmount());
+		expectedAmountShopping = expectedAmountShopping.add(sixthExpense.getAmount());
+		
+		expectedAmountFood = expectedAmountFood.add(firstExpense.getAmount());
+		expectedAmountFood = expectedAmountFood.add(thirdExpense.getAmount());
+		expectedAmountFood = expectedAmountFood.add(fifthExpense.getAmount());
+		
+		expenseManager.addExpense(firstExpense);
+		expenseManager.addExpense(secondExpense);
+		expenseManager.addExpense(thirdExpense);
+		expenseManager.addExpense(fourthExpense);
+		expenseManager.addExpense(fifthExpense);
+		expenseManager.addExpense(sixthExpense);
+		
+		// Act
+		BigDecimal totalAmountShopping = expenseManager.getTotalAmountByCategory(Category.SHOPPING);
+		BigDecimal totalAmountFood     = expenseManager.getTotalAmountByCategory(Category.FOOD);
+		
+		assertEquals(expectedAmountShopping, totalAmountShopping);
+		assertEquals(expectedAmountFood, totalAmountFood);
+	}
+	
 }
